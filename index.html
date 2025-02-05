@@ -7,7 +7,7 @@
     <style>
         body {
             background-image: url('https://i.imgur.com/BvVV4Xl.jpeg');
-            background-size: contain; /* Adjust the background size to fit within the screen */
+            background-size: contain;
             background-position: center;
             background-repeat: no-repeat;
             height: 100vh;
@@ -121,7 +121,7 @@
         function showResponse(isYes) {
             let responseMessageContainer = document.getElementById("responseMessageContainer");
             let responseMessage = isYes ? "정말? 너무 좋아!" : "괜찮아! 날 좋아하게 될 때까지 기다릴게~";
-            responseMessageContainer.innerText = responseMessage;
+            responseMessageContainer.innerHTML = `<div class="message-bubble">${responseMessage}</div>`;
             responseMessageContainer.style.display = "block";
 
             setTimeout(() => {
