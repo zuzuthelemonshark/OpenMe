@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Valentine's Day</title>
+    <style>
+        body {
+            background-image: url('https://i.imgur.com/BvVV4Xl.jpeg');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .message-bubble {
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 20px;
+            width: fit-content;
+            max-width: 80%;
+            margin: 10px auto;
+            font-size: 18px;
+            text-align: center;
+            color: white;
+        }
+
+        .single-line {
+            white-space: nowrap;
+        }
+
+        .multi-line {
+            white-space: normal;
+        }
+
+        .big-message {
+            padding: 30px;
+            background-color: #ffcccb;
+            border-radius: 30px;
+            width: fit-content;
+            max-width: 80%;
+            margin: 20px auto;
+            font-size: 24px;
+            text-align: center;
+            color: black;
+            font-weight: bold;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .yes-button {
+            background-color: #4CAF50;
+            color: white;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .yes-button:hover {
+            transform: scale(1.1);
+        }
+
+        .no-button {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .final-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            margin-top: 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
+
+        .emoji {
+            position: absolute;
+            font-size: 24px;
+            animation: floatUp 2s ease-out forwards;
+        }
+
+        @keyframes floatUp {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-100px) scale(1.5); }
+        }
+    </style>
+</head>
+<body>
+    <div id="messageContainer"></div>
+    <div id="buttonContainer" style="display: none;">
+        <button class="yes-button" onclick="showResponse(true)">Yes</button>
+        <button class="no-button" onclick="showResponse(false)">No</button>
+    </div>
+    <div id="responseContainer" style="display: none;"></div>
+    <div id="finalButtonContainer" style="display: none;">
+        <button class="final-button" onclick="closeEverything()">좋아</button>
+    </div>
+
+    <script>
+        let messages = [
+            { text: "준호야 안녕!", class: "message-bubble" },
+            { text: "너 알게 돼서 정말 다행이야", class: "message-bubble single-line" },
+            { text: "넌 언제나 주변 사람들을 기분 좋게 만드는 사람 같아", class: "message-bubble multi-line" },
+            { text: "나도 그중 한명!", class: "message-bubble" },
+            { text: "Will you be my valentine?", class: "message-bubble" }
+        ];
+
+        let index = 0;
+        let messageContainer = document.getElementById("messageContainer");
+        let buttonContainer = document.getElementById("buttonContainer");
+        let finalButtonContainer = document.getElementById("finalButtonContainer");
+
+        function showMessages() {
+            if (index < messages.length) {
+                let newMessage = document.createElement("div");
+                newMessage.className = messages[index].class;
+                newMessage.innerText = messages[index].text;
+                messageContainer.appendChild(newMessage);
+                index++;
+                setTimeout(showMessages, 1500);
+            } else {
+                setTimeout(() => {
+                    buttonContainer.style.display = "block";
+                }, 1000);
+            }
+        }
+
+        function showResponse(isYes) {
+            document.getElementById("messageContainer").style.display = "none";
+            document.getElementById("buttonContainer").style.display = "none";
+
+            let responseContainer = document.getElementById("responseContainer");
+            responseContainer.style.display = "block";
+
+            let responseBubble = document.createElement("div");
+            responseBubble.classList.add("big-message");
+
+            if (isYes) {
+                responseBubble.innerText = "정말? 너무 좋아!";
+                createEmojis("❤️");
+            } else {
+                responseBubble.innerText = "괜찮아! 날 좋아하게 될 때까지 기다릴게~";
+                createEmojis("😭");
+            }
+
+            responseContainer.appendChild(responseBubble);
+            finalButtonContainer.style.display = "block";
+        }
+
+        function createEmojis(type) {
+            for (let i = 0; i < 10; i++) {
+                let emoji = document.createElement("div");
+                emoji.classList.add("emoji");
+                emoji.innerText = type;
+                emoji.style.left = Math.random() * 100 + "vw";
+                emoji.style.top = Math.random() * 50 + 50 + "vh";
+                document.body.appendChild(emoji);
+
+                setTimeout(() => {
+                    emoji.remove();
+                }, 2000);
+            }
+        }
+
+        function closeEverything() {
+            document.body.innerHTML = "";
+        }
+
+        window.onload = showMessages;
+    </script>
+</body>
+</html>
